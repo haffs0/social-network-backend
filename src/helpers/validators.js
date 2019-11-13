@@ -13,6 +13,5 @@ module.exports = {
   jobRole: Joi.string().required(),
   address: Joi.string().required(),
   id: Joi.number().integer().required(),
-  createUser: Joi.string(),
   userAccess: Joi.string(),
 };

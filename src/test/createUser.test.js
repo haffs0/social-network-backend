@@ -25,7 +25,7 @@ const user = {
 const newUser = {
   firstName: 'Oyinda',
   lastName: 'Aremu',
-  email: 'adegol@gmail.com',
+  email: 'try2@gmail.com',
   password: 'aremu',
   gender: 'Female',
   jobRole: 'Lead developer',
@@ -121,6 +121,7 @@ describe('Create users test', () => {
           address: 'Yaba Lagos',
           phoneNumber: '08092341243',
           role: 'user',
+          userAccess: 'yes',
         })
         .end((err, res) => {
           expect(res.status).to.equal(500);
@@ -143,6 +144,7 @@ describe('Create users test', () => {
           address: 'Yaba Lagos',
           phoneNumber: '08092341243',
           role: 'user',
+          userAccess: 'yes',
         })
         .end((err, res) => {
           expect(res.status).to.equal(500);
@@ -167,6 +169,7 @@ describe('Create users test', () => {
           address: 'Yaba Lagos',
           phoneNumber: '08092341243',
           role: 'user',
+          userAccess: 'yes',
         })
         .end((err, res) => {
           expect(res.status).to.equal(500);
@@ -189,6 +192,7 @@ describe('Create users test', () => {
           address: 'Yaba Lagos',
           phoneNumber: '08092341243',
           role: 'user',
+          userAccess: 'yes',
         })
         .end((err, res) => {
           expect(res.status).to.equal(500);
@@ -211,6 +215,7 @@ describe('Create users test', () => {
           address: 'Yaba Lagos',
           phoneNumber: '08092341243',
           role: 'user',
+          userAccess: 'yes',
         })
         .end((err, res) => {
           expect(res.status).to.equal(500);
