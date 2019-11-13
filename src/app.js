@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const logger = require('./helpers/logger');
+const userRoutes = require('./routes/user');
 const cloud = require('./helpers/cloudinary-config')
 
 
@@ -18,6 +19,7 @@ app.use(
 app.use('*', cloud.cloudinaryConfig)
 app.use(logger.requestLogger);
 
+app.use('/api/v1/auth', userRoutes);
 
 app.use(logger.unknownEndpoint);
 app.use(logger.errorHandler);
