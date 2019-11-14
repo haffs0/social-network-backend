@@ -19,8 +19,8 @@ exports.createGif = async (request, response) => {
       id = user.rows.length + 1;
     }
     else {
-      const gifsId = user.rows.map((element) => element.gif_id)
-      const maxValue = Math.max(...gifsId)
+      const gifsId = user.rows.map((element) => element.gif_id);
+      const maxValue = Math.max(...gifsId);
       id = maxValue + 1;
     }
     await pool.query('INSERT INTO public.gifs (user_id, title, image_url, date) VALUES($1, $2, $3, $4)', [userId, title, imageUrl, new Date()]);
@@ -46,8 +46,8 @@ exports.createArticles = async (request, response) => {
       id = result.rows.length + 1;
     }
     else {
-      const articleId = result.rows.map((element) => element.article_id)
-      const maxValue = Math.max(...articleId)
+      const articleId = result.rows.map((element) => element.article_id);
+      const maxValue = Math.max(...articleId);
       id = maxValue + 1;
     }
     await pool.query('INSERT INTO public.article (user_id, title, article, date) VALUES($1, $2, $3, $4)', [userId, title, article, new Date()]);
@@ -62,4 +62,23 @@ exports.createArticles = async (request, response) => {
   catch (error) {
     return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
   }
+};
+
+exports.updateArticles = async (request, response) => {
+  const articleId = parseInt(request.params.articleId, 10);
+  const { userId, title, article } = request.body;
+  try {
+    await pool.query('UPDATE public.article SET title = $1, article = $2, date = $3 WHERE article_id = $4 And user_id = $5', [title, article, new Date(), articleId, userId]);
+    const data = {
+      articleId,
+      updatedOn: new Date(),
+      title,
+      article,
+    };
+    return respondWithSuccess(response, statusCode.created, responseMessage.articleUpdated, data);
+  }
+  catch (error) {
+    return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+  }
 }
+;
