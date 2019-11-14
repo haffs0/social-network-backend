@@ -14,4 +14,6 @@ module.exports = {
   address: Joi.string().required(),
   id: Joi.number().integer().required(),
   userAccess: Joi.string(),
+  article: Joi.string().required().trim(),
+  title: Joi.string().required().trim(),
 };

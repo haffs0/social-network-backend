@@ -36,14 +36,30 @@ const validateCreateUserFormData = (req, res, next) => {
   const schema = data.constructor === Array ? Joi.array().items(createUserSchema) : createUserSchema;
   const { error } = schema.validate(data, {abortEarly: false });
   if (!error) {
-    console.log('good')
     return next();
   }
-  console.log('bad')
   return respondWithWarning(res, statuscode.badRequest, responseMessage.badInputRequest, error);
 };
+
+
+const validateArticlePosted = (req, res, next) => {
+  const data = req.body;
+  const createArticleSchema = Joi.object().keys({
+    userId: validator.id,
+    title: validator.title,
+    article: validator.article,
+  });
+  const schema = data.constructor === Array ? Joi.array().items(createArticleSchema) : createArticleSchema;
+  const { error } = schema.validate(data, {abortEarly: false });
+  if (!error) {
+    return next();
+  }
+  return respondWithWarning(res, statuscode.badRequest, 'Field must not empty', error);
+};
+
 
 module.exports = {
   validateCreateUserFormData,
   validateSigninFormData,
+  validateArticlePosted,
 };
