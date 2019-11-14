@@ -13,7 +13,7 @@ let adminToken;
 let userToken;
 
 const admin = {
-  email: 'admin7@teamwork.com',
+  email: 'admin2@teamwork.com',
   password: '123456',
 };
 
@@ -25,7 +25,7 @@ const user = {
 const newUser = {
   firstName: 'Oyinda',
   lastName: 'Aremu',
-  email: 'try2@gmail.com',
+  email: 'try7@gmail.com',
   password: 'aremu',
   gender: 'Female',
   jobRole: 'Lead developer',
