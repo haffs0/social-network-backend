@@ -6,4 +6,5 @@ module.exports = {
   unauthorized: 'You dont have right to create a user',
   gifCreated: 'GIF image successfully posted',
   expiredSession: 'Please signin to continue',
+  articleCreated: 'Article successfully posted'
 };
