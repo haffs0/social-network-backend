@@ -133,3 +133,32 @@ exports.createCommentOfArticle = async (request, response) => {
     return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
   }
 }
+
+exports.createCommentOfGif = async (request, response) => {
+  const { userId, comment } = request.body;
+  const gifId = parseInt(request.params.gifId, 10);
+  let id;
+  try {
+    const result = await pool.query('SELECT gifs_comment_id FROM public.gifs_comment');
+    if (result.rows.length === 0) {
+      id = result.rows.length + 1;
+    }
+    else {
+      const commentId = result.rows.map((element) => element.gifs_comment_id);
+      const maxValue = Math.max(...commentId);
+      id = maxValue + 1;
+    }
+    await pool.query('INSERT INTO public.gifs_comment (gif_id, user_id, gif_comment, date) VALUES($1, $2, $3, $4)', [gifId, userId, comment, new Date()]);
+    const value = await pool.query('SELECT title FROM public.gifs');
+    const data = {
+      commentId: id,
+      createdOn: new Date(),
+      gifTitle: value.rows[0].title,
+      comment,
+    };
+    return respondWithSuccess(response, statusCode.created, 'Comment successfully created', data);
+  }
+  catch (error) {
+    return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+  }
+}

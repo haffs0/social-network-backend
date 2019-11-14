@@ -35,7 +35,7 @@ describe('Gifs post tests', () => {
       chai.request(app)
         .post(gifsPostUrl)
         .set('Content-Type', 'application/x-www-form-urlencoded')
-        .field('userId', '1')
+        .field('userId', 32)
         .field('title', 'Beautiful')
         .attach('image', fs.readFileSync(path.join(__dirname, '/mockData/gif.jpg')), 'gif.jpg')
         .set('Authorization', userToken)
