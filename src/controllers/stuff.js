@@ -66,9 +66,9 @@ exports.createArticles = async (request, response) => {
 
 exports.updateArticles = async (request, response) => {
   const articleId = parseInt(request.params.articleId, 10);
-  const { userId, title, article } = request.body;
+  const { title, article } = request.body;
   try {
-    await pool.query('UPDATE public.article SET title = $1, article = $2, date = $3 WHERE article_id = $4 And user_id = $5', [title, article, new Date(), articleId, userId]);
+    await pool.query('UPDATE public.article SET title = $1, article = $2, date = $3 WHERE article_id = $4', [title, article, new Date(), articleId]);
     const data = {
       articleId,
       updatedOn: new Date(),
@@ -87,6 +87,17 @@ exports.deleteArticles = async (request, response) => {
   try {
     await pool.query('DELETE FROM public.article  WHERE article_id = $1', [articleId]);
     return respondWithSuccess(response, statusCode.success, 'Article successfully deleted');
+  }
+  catch (error) {
+    return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+  }
+};
+
+exports.deleteGifs = async (request, response) => {
+  const gifId = parseInt(request.params.gifId, 10);
+  try {
+    await pool.query('DELETE FROM public.gifs  WHERE gif_id = $1', [gifId]);
+    return respondWithSuccess(response, statusCode.success, 'gifs post successfully deleted');
   }
   catch (error) {
     return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
