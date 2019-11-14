@@ -1,1 +1,2 @@
 # social-network-backend
+[![Build Status](https://travis-ci.org/haffs0/social-network-backend.svg?branch=develop)](https://travis-ci.org/haffs0/social-network-backend) [![Coverage Status](https://coveralls.io/repos/github/haffs0/social-network-backend/badge.svg?branch=develop)](https://coveralls.io/github/haffs0/social-network-backend?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/90b43cb9d1ef5e30f68c/maintainability)](https://codeclimate.com/github/haffs0/social-network-backend/maintainability)

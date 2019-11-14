@@ -76,7 +76,7 @@ describe('user(s) signin test', () => {
         .post(signinUrl)
         .send({
           email: 'haffslaf@gmail.com',
-          password: '12388977', 
+          password: '12388977',
         })
         .end((error, res) => {
           expect(res).to.have.status(401);
@@ -85,6 +85,23 @@ describe('user(s) signin test', () => {
           expect(res.body).to.have.property('payload');
           expect(res.body.success).to.equal(false);
           expect(res.body.message).to.equal('Incorrect email or password');
+          done();
+        });
+    });
+    it('should not signin a user with wrong email', (done) => {
+      chai.request(app)
+        .post(signinUrl)
+        .send({
+          email: 'admin4@teamwork.com',
+          password: '123456',
+        })
+        .end((error, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.property('message');
+          expect(res.body).to.have.property('payload');
+          expect(res.body.success).to.equal(false);
+          expect(res.body.message).to.equal('Fail to login');
           done();
         });
     });

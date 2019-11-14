@@ -34,7 +34,7 @@ exports.signIn = async (request, response) => {
     const user = await pool.query('SELECT * FROM public.user WHERE email = $1', [email]);
     const [data] = user.rows;
     const checkPassword = await bcrypt.compare(password, data.password);
-    if (!checkPassword) return respondWithWarning(response, statusCode.unauthorizedAccess, 'Incorrect email or password');
+    if (!checkPassword || data.email !== email) return respondWithWarning(response, statusCode.unauthorizedAccess, 'Incorrect email or password');
     const payload = { userId: data.user_id, role: data.role };
     const token = await generateToken(payload);
     const values = {
