@@ -18,9 +18,8 @@ const user = {
 };
 
 const post = {
-  userId: 33,
   title: 'she is beautiful',
-  article: 'My first love',
+  article: 'My first love, love her',
 };
 
 describe('Article update posts test', () => {
@@ -66,7 +65,6 @@ describe('Article update posts test', () => {
         .patch(articleUpdatedPost)
         .set('Authorization', userToken)
         .send({
-          userId: 33,
           title: '              ',
           article: 'when is about to rain the sky becomes blue and everything. Things about rain are beautiful.',
         })
@@ -81,7 +79,6 @@ describe('Article update posts test', () => {
         .patch(articleUpdatedPost)
         .set('Authorization', userToken)
         .send({
-          userId: 33,
           title: '',
           article: 'when is about to rain the sky becomes blue and everything. Things about rain are beautiful.',
         })
