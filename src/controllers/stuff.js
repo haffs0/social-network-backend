@@ -103,3 +103,33 @@ exports.deleteGifs = async (request, response) => {
     return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
   }
 };
+
+exports.createCommentOfArticle = async (request, response) => {
+  const { userId, comment } = request.body;
+  const articleId = parseInt(request.params.articleId, 10);
+  let id;
+  try {
+    const result = await pool.query('SELECT article_comment_id FROM public.article_comment');
+    if (result.rows.length === 0) {
+      id = result.rows.length + 1;
+    }
+    else {
+      const commentId = result.rows.map((element) => element.article_comment_id);
+      const maxValue = Math.max(...commentId);
+      id = maxValue + 1;
+    }
+    await pool.query('INSERT INTO public.article_comment (article_id, user_id, comment, date) VALUES($1, $2, $3, $4)', [articleId, userId, comment, new Date()]);
+    const value = await pool.query('SELECT title, article FROM public.article');
+    const data = {
+      commentId: id,
+      createdOn: new Date(),
+      articleTitle: value.rows[0].title,
+      article: value.rows[0].article,
+      comment,
+    };
+    return respondWithSuccess(response, statusCode.created, 'Comment successfully created', data);
+  }
+  catch (error) {
+    return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+  }
+}
