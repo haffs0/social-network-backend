@@ -80,5 +80,15 @@ exports.updateArticles = async (request, response) => {
   catch (error) {
     return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
   }
-}
-;
+;}
+
+exports.deleteArticles = async (request, response) => {
+  const articleId = parseInt(request.params.articleId, 10);
+  try {
+    await pool.query('DELETE FROM public.article  WHERE article_id = $1', [articleId]);
+    return respondWithSuccess(response, statusCode.success, 'Article successfully deleted');
+  }
+  catch (error) {
+    return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+  }
+};
