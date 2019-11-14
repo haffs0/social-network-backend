@@ -12,6 +12,7 @@ const router = express.Router();
 router.post('/gifs', authentication, per.checkPermission('user_access'), multerConfig.multerUploads, stuffCTRL.createGif);
 router.post('/articles', authentication, per.checkPermission('user_access'), validateArticlePosted, stuffCTRL.createArticles);
 router.patch('/articles/:articleId', authentication, per.checkPermission('user_access'), validateArticlePosted, stuffCTRL.updateArticles);
+router.delete('/articles/:articleId', authentication, per.checkPermission('user_access'), stuffCTRL.deleteArticles);
 
 module.exports = router;
 
