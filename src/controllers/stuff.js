@@ -80,7 +80,7 @@ exports.updateArticles = async (request, response) => {
   catch (error) {
     return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
   }
-;}
+};
 
 exports.deleteArticles = async (request, response) => {
   const articleId = parseInt(request.params.articleId, 10);
@@ -132,7 +132,7 @@ exports.createCommentOfArticle = async (request, response) => {
   catch (error) {
     return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
   }
-}
+};
 
 exports.createCommentOfGif = async (request, response) => {
   const { userId, comment } = request.body;
@@ -161,4 +161,57 @@ exports.createCommentOfGif = async (request, response) => {
   catch (error) {
     return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
   }
-}
+};
+
+exports.getAll = async (request, response) => {
+  try {
+    const result = await pool.query('select u.user_id, gif_id, first_name, last_name, g.title gifTitle, g.date gifDate, image_url from public.user u LEFT JOIN public.gifs g ON u.user_id = g.user_id ORDER BY g.date DESC');
+    // console.log(result.rows);
+    const article = await pool.query('select u.user_id, article_id, first_name, last_name, a.date articleDate, a.title articleTitle, article from public.user u LEFT JOIN public.article a ON u.user_id = a.user_id ORDER BY a.date DESC');
+    const articleData =article.rows;
+    const data = result.rows;
+    const articlesPost = articleData.map((ele) => ({name: `${ele.first_name} ${ele.last_name}`, articleId: ele.article_id, createdOn: ele.articledate, title: ele.articletitle, article: ele.article, authorId: ele.user_id }));
+    const gifsPost = data.map((ele) => ({name: `${ele.first_name} ${ele.last_name}`, gifId: ele.gif_id, createdOn: ele.gifdate, title: ele.giftitle, url: ele.image_url, authorId: ele.user_id }));
+    const filterArticles = articlesPost.filter((ele) => ele.article !== null);
+    const filterGifs = gifsPost.filter((ele) => ele.url !== null);
+    const articleComment = await pool.query('select a.user_id authorId, a.article_id articleId, article_comment_id commentId, c.date createdOn, c.comment articleComment from public.article a LEFT JOIN public.article_comment c ON a.article_id = c.article_id ORDER BY c.date DESC');
+    const commentValue = articleComment.rows;
+    const gifComment = await pool.query('select g.user_id authorId, g.gif_id gifId, gifs_comment_id commentId, c.date createdOn, c.gif_comment gifComment from public.gifs g LEFT JOIN public.gifs_comment c ON g.gif_id = c.gif_id ORDER BY c.date DESC');
+    const gifsCommentValue = gifComment.rows;
+    for (let i = 0; i < filterArticles.length; i++) {
+      commentValue.forEach((ele) => {
+        if (filterArticles[i].articleId === ele.articleid) {
+          if (ele.articlecomment !== null) {
+            if (typeof filterArticles[i].comments === 'undefined') {
+              filterArticles[i].comments = [];
+              filterArticles[i].comments.push(ele)
+            }
+            else {
+              filterArticles[i].comments.push(ele);
+            }
+          };
+        };
+      });
+    }
+    for (let i = 0; i < filterGifs.length; i++) {
+      gifsCommentValue.forEach((ele) => {
+        if (filterGifs[i].gifId === ele.gifid) {
+          if (ele.gifcomment !== null) {
+            if (typeof filterGifs[i].comments === 'undefined') {
+              filterGifs[i].comments = [];
+              filterGifs[i].comments.push(ele);
+            }
+            else {
+              filterGifs[i].comments.push(ele);
+            }
+          }
+        };
+      });
+    }
+    filterArticles.push(...filterGifs);
+    return respondWithSuccess(response, statusCode.success, 'Successfully', filterArticles);
+  }
+  catch (error) {
+    return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+  }
+};
