@@ -215,3 +215,18 @@ exports.getAll = async (request, response) => {
     return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
   }
 };
+
+exports.viewSpecficArticle = async (request, response) => {
+  const articleId = parseInt(request.params.articleId, 10);
+  try {
+    const article = await pool.query('select u.user_id authorID, article_id articleId, first_name firstName, last_name lastName, a.date createdOn, a.title articleTitle, article from public.user u LEFT JOIN public.article a ON u.user_id = a.user_id where article_id =$1', [articleId]);
+    const articleComment = await pool.query('select a.user_id authorId, a.article_id articleId, article_comment_id commentId, c.date createdOn, c.comment articleComment from public.article a LEFT JOIN public.article_comment c ON a.article_id = c.article_id where a.article_id = $1', [articleId]);
+    const articleValue = article.rows[0];
+    const commentValue = articleComment.rows;
+    articleValue.comments = [...commentValue]
+    return respondWithSuccess(response, statusCode.success, 'Successfully', articleValue);
+  }
+  catch (error) {
+    return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+  }
+}
