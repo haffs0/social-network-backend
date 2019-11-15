@@ -18,6 +18,7 @@ router.post('/articles/:articleId/comment', authentication, per.checkPermission(
 router.post('/gifs/:gifId/comment', authentication, per.checkPermission('user_access'), stuffCTRL.createCommentOfGif);
 router.get('/feed', authentication, per.checkPermission('user_access'), stuffCTRL.getAll);
 router.get('/articles/:articleId', authentication, per.checkPermission('user_access'), stuffCTRL.viewSpecficArticle);
+router.get('/gifs/:gifId', authentication, per.checkPermission('user_access'), stuffCTRL.viewSpecficGif);
 
 module.exports = router;
 

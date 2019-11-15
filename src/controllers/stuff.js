@@ -230,3 +230,18 @@ exports.viewSpecficArticle = async (request, response) => {
     return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
   }
 }
+
+exports.viewSpecficGif = async (request, response) => {
+  const gifId = parseInt(request.params.gifId, 10);
+  try {
+    const gif = await pool.query('select u.user_id authorId, gif_id gifId, first_name firstName, last_name lastName, g.title gifTitle, g.date gifDate, image_url from public.user u LEFT JOIN public.gifs g ON u.user_id = g.user_id where gif_id =$1', [gifId]);
+    const gifComment = await pool.query('select g.user_id authorId, g.gif_id gifId, gifs_comment_id commentId, c.date createdOn, c.gif_comment gifComment from public.gifs g LEFT JOIN public.gifs_comment c ON g.gif_id = c.gif_id where g.gif_id = $1', [gifId]);
+    const gifValue = gif.rows[0];
+    const commentValue = gifComment.rows;
+    gifValue.comments = [...commentValue]
+    return respondWithSuccess(response, statusCode.success, 'Successfully', gifValue);
+  }
+  catch (error) {
+    return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+  }
+}
