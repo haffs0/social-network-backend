@@ -85,6 +85,7 @@ exports.updateArticles = async (request, response) => {
 exports.deleteArticles = async (request, response) => {
   const articleId = parseInt(request.params.articleId, 10);
   try {
+    await pool.query('DELETE FROM public.article_comment WHERE article_id = $1', [articleId]);
     await pool.query('DELETE FROM public.article  WHERE article_id = $1', [articleId]);
     return respondWithSuccess(response, statusCode.success, 'Article successfully deleted');
   }
@@ -96,6 +97,7 @@ exports.deleteArticles = async (request, response) => {
 exports.deleteGifs = async (request, response) => {
   const gifId = parseInt(request.params.gifId, 10);
   try {
+    await pool.query('DELETE FROM public.gifs_comment WHERE gif_id = $1', [gifId]);
     await pool.query('DELETE FROM public.gifs  WHERE gif_id = $1', [gifId]);
     return respondWithSuccess(response, statusCode.success, 'gifs post successfully deleted');
   }
@@ -313,6 +315,33 @@ exports.flagPosts = async (request, response) => {
       catch (error) {
         return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
       };
+    default:
+      return respondWithWarning(response, statusCode.internalServerError, 'Server Error');
+  }
+}
+
+exports.deleteFlagPosts = async (request, response) => {
+  const id = parseInt(request.params.id, 10);
+  const { tableName } = request.body;
+  switch (tableName) {
+    case 'article':
+      try {
+        await pool.query('DELETE FROM public.article_comment WHERE article_id = $1', [id]);
+        await pool.query('DELETE FROM public.article WHERE article_id = $1', [id]);
+        return respondWithSuccess(response, statusCode.success, 'Article flag as inappropriate deleted');
+      }
+      catch (error) {
+        return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+      }
+    case 'gif':
+      try {
+        await pool.query('DELETE FROM public.gifs_comment WHERE gif_id = $1', [id]);
+        await pool.query('DELETE FROM public.gifs WHERE gif_id = $1', [id]);
+        return respondWithSuccess(response, statusCode.success, 'Gif flag as inappropriate deleted');
+      }
+      catch (error) {
+        return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+      }
     default:
       return respondWithWarning(response, statusCode.internalServerError, 'Server Error');
   }
