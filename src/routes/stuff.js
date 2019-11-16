@@ -20,6 +20,7 @@ router.get('/feed', authentication, per.checkPermission('user_access'), stuffCTR
 router.get('/articles/:articleId', authentication, per.checkPermission('user_access'), stuffCTRL.viewSpecficArticle);
 router.get('/gifs/:gifId', authentication, per.checkPermission('user_access'), stuffCTRL.viewSpecficGif);
 router.get('/category', authentication, per.checkPermission('user_access'), stuffCTRL.category);
+router.patch('/flag/:id', authentication, per.checkPermission('user_access'), stuffCTRL.flagPosts);
 
 module.exports = router;
 

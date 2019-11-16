@@ -41,6 +41,7 @@ describe('feed(all articles posts and gifs posts) test', () => {
         .get(feed)
         .set('Authorization', userToken)
         .end((err, res) => {
+          console.log(res.body.payload[0])
           expect(res.status).to.equal(200);
           expect(res.body).to.have.property('success', true);
           expect(res.body.payload[0]).to.have.property('authorId');
@@ -49,7 +50,6 @@ describe('feed(all articles posts and gifs posts) test', () => {
           expect(res.body.payload[0]).to.have.property('createdOn');
           expect(res.body.payload[0]).to.have.property('title');
           expect(res.body.payload[0]).to.have.property('article');
-          expect(res.body.payload[0]).to.have.property('comments');
           done();
         });
     });

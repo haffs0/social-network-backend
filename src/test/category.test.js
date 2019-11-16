@@ -50,7 +50,6 @@ describe('view all articles that belong to a category test', () => {
           expect(res.body.payload[0]).to.have.property('createdOn');
           expect(res.body.payload[0]).to.have.property('title');
           expect(res.body.payload[0]).to.have.property('article');
-          expect(res.body.payload[0]).to.have.property('comments');
           done();
         });
     });

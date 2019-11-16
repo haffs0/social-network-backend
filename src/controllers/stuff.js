@@ -276,3 +276,44 @@ exports.category = async (request, response) => {
     return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
   }
 }
+
+exports.flagPosts = async (request, response) => {
+  const id = parseInt(request.params.id, 10);
+  const { tableName } = request.body;
+  switch (tableName) {
+    case 'article':
+      try {
+        await pool.query('UPDATE public.article SET article_flag = $1 WHERE article_id = $2', ['flag', id]);
+        return respondWithSuccess(response, statusCode.created, 'Article flag as inappropriate');
+      }
+      catch (error) {
+        return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+      }
+    case 'gif':
+      try {
+        await pool.query('UPDATE public.gifs SET gif_flag = $1 WHERE gif_id = $2', ['flag', id]);
+        return respondWithSuccess(response, statusCode.created, 'Gif flag as inappropriate');
+      }
+      catch (error) {
+        return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+      }
+    case 'gifComment':
+      try {
+        await pool.query('UPDATE public.gifs_comment SET gif_comment_flag = $1 WHERE gifs_comment_id = $2', ['flag', id]);
+        return respondWithSuccess(response, statusCode.created, 'Comment flag as inappropriate');
+      }
+      catch (error) {
+        return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+      };
+    case 'articleComment':
+      try {
+        await pool.query('UPDATE public.article_comment SET article_comment_flag = $1 WHERE article_comment_id = $2', ['flag', id]);
+        return respondWithSuccess(response, statusCode.created, 'Comment flag as inappropriate');
+      }
+      catch (error) {
+        return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+      };
+    default:
+      return respondWithWarning(response, statusCode.internalServerError, 'Server Error');
+  }
+}
