@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
 
-const feed = '/api/v1/feed';
+const feeds = '/api/v1/feed';
 const loginUrl = '/api/v1/auth/signin';
 
 const { expect } = chai;
