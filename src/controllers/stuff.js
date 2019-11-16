@@ -245,3 +245,34 @@ exports.viewSpecficGif = async (request, response) => {
     return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
   }
 }
+
+exports.category = async (request, response) => {
+  const { category } = request.body;
+  try {
+    const article = await pool.query('select u.user_id, article_id, first_name, last_name, a.date articleDate, a.title articleTitle, article from public.user u LEFT JOIN public.article a ON u.user_id = a.user_id where article like  $1', [`%${category}%`]);
+    const articleData = article.rows;
+    const articlesPost = articleData.map((ele) => ({name: `${ele.first_name} ${ele.last_name}`, articleId: ele.article_id, createdOn: ele.articledate, title: ele.articletitle, article: ele.article, authorId: ele.user_id }))
+    const filterArticles = articlesPost.filter((ele) => ele.article !== null);
+    const articleComment = await pool.query('select a.user_id authorId, a.article_id articleId, article_comment_id commentId, c.date createdOn, c.comment articleComment from public.article a LEFT JOIN public.article_comment c ON a.article_id = c.article_id ORDER BY c.date DESC');
+    const commentValue = articleComment.rows;
+    for (let i = 0; i < filterArticles.length; i++) {
+      commentValue.forEach((ele) => {
+        if (filterArticles[i].articleId === ele.articleid) {
+          if (ele.articlecomment !== null) {
+            if (typeof filterArticles[i].comments === 'undefined') {
+              filterArticles[i].comments = [];
+              filterArticles[i].comments.push(ele)
+            }
+            else {
+              filterArticles[i].comments.push(ele);
+            }
+          };
+        };
+      });
+    }
+    return respondWithSuccess(response, statusCode.success, 'Successfully', filterArticles);
+  }
+  catch (error) {
+    return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+  }
+}
