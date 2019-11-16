@@ -22,6 +22,7 @@ router.get('/gifs/:gifId', authentication, per.checkPermission('user_access'), s
 router.get('/category', authentication, per.checkPermission('user_access'), stuffCTRL.category);
 router.patch('/flag/:id', authentication, per.checkPermission('user_access'), stuffCTRL.flagPosts);
 router.delete('/flag/:id', authentication, per.checkPermission('create_user'), stuffCTRL.deleteFlagPosts);
+router.get('/logout', authentication, per.checkPermission('user_access'), stuffCTRL.logout);
 
 module.exports = router;
 

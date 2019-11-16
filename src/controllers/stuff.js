@@ -342,7 +342,25 @@ exports.deleteFlagPosts = async (request, response) => {
       catch (error) {
         return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
       }
+    case 'gifComment':
+      try {
+        await pool.query('DELETE FROM public.gifs_comment WHERE gifs_comment_id = $1', [id]);
+        return respondWithSuccess(response, statusCode.success, 'Gif comment flag as inappropriate deleted');
+      }
+      catch (error) {
+        return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+      }
+    case 'articleComment':
+      try {
+        await pool.query('DELETE FROM public.article_comment WHERE article_comment_id = $1', [id]);
+        return respondWithSuccess(response, statusCode.success, 'Article comment flag as inappropriate deleted');
+      }
+      catch (error) {
+        return respondWithWarning(response, statusCode.internalServerError, 'Server Error', error);
+      }
     default:
       return respondWithWarning(response, statusCode.internalServerError, 'Server Error');
   }
 }
+
+exports.logout = (request, response) => respondWithSuccess(response, statusCode.success, 'Successfully Logged out');
