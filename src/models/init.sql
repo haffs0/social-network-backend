@@ -1,4 +1,6 @@
-CREATE TABLE user (
+
+CREATE TABLE users 
+(
     user_id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
@@ -17,7 +19,7 @@ CREATE TABLE user (
 CREATE TABLE article
 (
     article_id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES user(user_id),
+    user_id INT REFERENCES users(user_id),
     title VARCHAR(255) NOT NULL,
     date TIMESTAMP,
     article VARCHAR(3000) NOT NULL,
@@ -28,7 +30,7 @@ CREATE TABLE article
 CREATE TABLE gifs
 (
     gif_id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES user(user_id),
+    user_id INT REFERENCES users(user_id),
     title VARCHAR(255) NOT NULL,
     image_url VARCHAR(255) NOT NULL,
     date TIMESTAMP,
@@ -60,8 +62,8 @@ CREATE TABLE gifs_comment
     user_flag_id integer,
 );
 
-INSERT INTO user (first_name, last_name, email, password, gender, job_role, department,address, phone_number, role, create_user, user_access)
+INSERT INTO users (first_name, last_name, email, password, gender, job_role, department,address, phone_number, role, create_user, user_access)
 VALUES  ('Rowling', 'Potter', 'admin2@teamwork.com', '123456', 'male', 'developer', 'IT', 'ipaja', '090873654375', 'Admin', 'Yes', 'Yes');
 
-INSERT INTO user (first_name, last_name, email, password, gender, job_role, department,address, phone_number, role, create_user, user_access)
+INSERT INTO users (first_name, last_name, email, password, gender, job_role, department,address, phone_number, role, create_user, user_access)
 VALUES  ('Rowling', 'Potter', 'john@teamwork.com', '123456', 'male', 'developer', 'IT', 'ipaja', '090873654375', 'User', '', 'Yes');
