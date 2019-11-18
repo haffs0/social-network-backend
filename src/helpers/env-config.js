@@ -7,6 +7,7 @@ const { USER, HOST, DATABASE, PASSWORD, POSTGRESPORT, DATABASE_URL } = process.e
 const { SECRET_KEY, EXPIRATION_DURATION } = process.env;
 const { ROLE } = process.env;
 
+const isTest = process.env.NODE_ENV === 'test'
 
 module.exports = {
   USER,
@@ -22,4 +23,5 @@ module.exports = {
   EXPIRATION_DURATION,
   ROLE,
   DATABASE_URL,
+  isTest,
 };
