@@ -24,7 +24,7 @@ env:
 
 before_script:
   - psql -c 'create database teamwork;' -U postgres
-  - psql -U postgres -f ./src/model/init.sql -d teamwork 
+  - psql -U postgres -f ./src/models/init.sql -d teamwork 
   - npm run build
 
 script:
