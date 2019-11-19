@@ -21,7 +21,7 @@ env:
 
 before_script:
   - travis_wait 30 npm install
-  - psql -c 'create database teamwork;' -U postgres
+  - psql -c 'create database teamworktest;' -U postgres
   - travis_wait npm install
   - node ./src/models/db.js createAllTables
   - travis_wait 30 node ./src/models/data.js insertAllData
@@ -29,6 +29,6 @@ before_script:
 
 script:
   - npm test
-  
+
 after_success:
   - npm run coverage
