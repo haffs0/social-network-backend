@@ -7,9 +7,6 @@ node_js:
 
 notifications:
   email: false
-
-addons:
-  postgresql: '12'
   
 cache:
   directories:
@@ -18,6 +15,7 @@ cache:
 services:
   - postgresql
 
+  
 env:
   global:
   - NODE_ENV=test
