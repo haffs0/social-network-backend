@@ -237,10 +237,10 @@ const dropgifsCommentsTable = () => {
  * Create All Tables
  */
 const createAllTables = () => {
-  createUserTable();
-  createArticleTable();
+  createUsersTable();
+  createArticlesTable();
   createGifsTable();
-  createArticleCommentTable();
+  createArticleCommentsTable();
   creategifCommentsTable();
   insertInitData();
 };
