@@ -139,7 +139,7 @@ const creategifCommentsTable = () => {
   Init Data
 */
 const insertInitData = () => {
-  const queryText = `INSERT INTO user (first_name, last_name, email, password, gender, job_role, department,address, phone_number, role, create_user, user_access) VALUES  ('Rowling', 'Potter', 'admin2@teamwork.com', '123456', 'male', 'developer', 'IT', 'ipaja', '090873654375', 'Admin', 'Yes', 'Yes');`
+  const queryText = `INSERT INTO user (first_name, last_name, email, password, gender, job_role, department,address, phone_number, role, create_user, user_access) VALUES  ('Rowling', 'Potter', 'admin2@teamwork.com', '123456', 'male', 'developer', 'IT', 'ipaja', '090873654375', 'Admin', 'Yes', 'Yes')`
 
   pool.query(queryText)
     .then((res) => {
