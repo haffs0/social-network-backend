@@ -12,9 +12,6 @@ cache:
   directories:
     - "node_modules"
 
-install:
-  - npm install
-
 services:
   - postgresql
 
@@ -23,11 +20,15 @@ env:
   - NODE_ENV=test
 
 before_script:
+  - travis_wait 30 npm install
   - psql -c 'create database teamwork;' -U postgres
-  - psql -U postgres -f ./src/models/init.sql -d teamwork 
+  - travis_wait npm install
+  - node ./src/models/db.js createAllTables
+  - travis_wait 30 node ./src/models/data.js insertAllData
   - npm run build
 
 script:
   - npm test
+  
 after_success:
   - npm run coverage
