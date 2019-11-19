@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec babel-node ./src/index.js",
-    "test": "export NODE_ENV=test && nyc --require @babel/register mocha ./src/test/**/*.test.js --timeout 20000 --exit",
+    "test": "cross-env export NODE_ENV=test nyc --require @babel/register mocha ./src/test/**/*.test.js --timeout 20000 --exit",
     "start": "node dist",
     "build": "rm -rf dist/ && babel src/ -d dist/",
     "lint": "./node_modules/.bin/eslint src",
