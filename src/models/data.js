@@ -18,16 +18,6 @@ const insertInitData = () => {
       console.log(err);
       pool.end();
     });
-
-    pool.query(queryText2)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-    });
 };
 
 /**
