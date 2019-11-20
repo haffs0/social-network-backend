@@ -20,7 +20,7 @@ const createUsersTable = () => {
         address VARCHAR(255) NOT NULL,
         phone_number VARCHAR(255) NOT NULL,
         role VARCHAR(255) NOT NULL,
-        create_user VARCHAR(255) NOT NULL,
+        create_user VARCHAR(255),
         user_access VARCHAR(255) NOT NULL
       )`;
 
