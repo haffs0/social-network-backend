@@ -47,7 +47,7 @@ const createArticlesTable = () => {
         date TIMESTAMP,
         article VARCHAR(3000),
         article_flag VARCHAR(255),
-        user_flag_id integer,
+        user_flag_id integer
       )`;
 
   pool.query(queryText)
@@ -73,7 +73,7 @@ const createGifsTable = () => {
         image_url VARCHAR(255),
         date TIMESTAMP,
         gif_flag VARCHAR(255),
-        user_flag_id integer,
+        user_flag_id integer
       )`;
 
   pool.query(queryText)
@@ -99,7 +99,7 @@ const createArticleCommentsTable = () => {
         comment text,
         date TIMESTAMP,
         article_comment_flag VARCHAR(255),
-        user_flag_id integer,
+        user_flag_id integer
       )`;
 
   pool.query(queryText)
@@ -122,7 +122,7 @@ const creategifCommentsTable = () => {
             gif_comment VARCHAR(255),
             date TIMESTAMP,
             gif_comment_flag VARCHAR(255),
-            user_flag_id integer,
+            user_flag_id integer
         )`;
   
     pool.query(queryText)
