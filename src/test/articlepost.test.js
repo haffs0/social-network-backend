@@ -13,41 +13,45 @@ let adminToken;
 let userToken;
 
 const admin = {
-  email: 'admin2@teamwork.com',
-  password: '123456',
+  email: 'admin@teamwork.com',
+  password: 'aremu',
 };
 
 const user = {
-  email: 'john@teamwork.com',
-  password: '123456',
+  email: 'aremu@teamwork.com',
+  password: 'aremu',
 };
 
 const post = {
-  userId: 32,
+  userId: 5,
   title: 'the rain season is a beautiful thing to talk',
   article: 'when is about to rain the sky becomes blue and everything. Things about rain are beautiful.',
 };
 
 const post1 = {
-  userId: 33,
+  userId: 6,
   title: 'she is beautiful',
   article: 'My first love',
 };
 
 describe('Article posts test', () => {
   before(async () => {
-    const res = await chai.request(app)
-      .post(loginUrl)
-      .send(user);
-    userToken = res.body.payload.token;
-    expect(res).to.have.status(200);
-
-    const response = await chai.request(app)
-      .post(loginUrl)
-      .send(admin);
-    adminToken = response.body.payload.token;
-    expect(response).to.have.status(200);
-    expect(response.body.payload).to.have.property('token');
+    try {
+      const res = await chai.request(app)
+        .post(loginUrl)
+        .send(user);
+      userToken = res.body.payload.token;
+      expect(res).to.have.status(200);
+      const response = await chai.request(app)
+        .post(loginUrl)
+        .send(admin);
+      adminToken = response.body.payload.token;
+      expect(response).to.have.status(200);
+      expect(response.body.payload).to.have.property('token');
+    }
+    catch (error) {
+      console.log(error)
+    }
   });
   describe('Unauthenticated user can not create article post.', () => {
     it('should respond with unauthenticated error', (done) => {
@@ -101,7 +105,7 @@ describe('Article posts test', () => {
         .post(articlePost)
         .set('Authorization', adminToken)
         .send({
-          userId: 32,
+          userId: 5,
           title: '              ',
           article: 'when is about to rain the sky becomes blue and everything. Things about rain are beautiful.',
         })
@@ -116,7 +120,7 @@ describe('Article posts test', () => {
         .post(articlePost)
         .set('Authorization', adminToken)
         .send({
-          userId: 32,
+          userId: 5,
           title: '',
           article: 'when is about to rain the sky becomes blue and everything. Things about rain are beautiful.',
         })

@@ -13,8 +13,8 @@ let userToken;
 
 
 const user = {
-  email: 'john@teamwork.com',
-  password: '123456',
+  email: 'aremu@teamwork.com',
+  password: 'aremu',
 };
 
 const post = {

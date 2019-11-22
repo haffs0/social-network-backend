@@ -11,23 +11,28 @@ chai.use(chaiHttp);
 let userToken;
 
 const user = {
-  email: 'john@teamwork.com',
-  password: '123456',
+  email: 'aremu@teamwork.com',
+  password: 'aremu',
 };
 
 const comment = {
-  userId: 32,
+  userId: 6,
   comment: 'beautiful to be home boy !!!!!!!!!!!'
 };
 
 describe('Article comment posts test', () => {
   before(async () => {
-    const res = await chai.request(app)
-      .post(loginUrl)
-      .send(user);
-    userToken = res.body.payload.token;
-    expect(res).to.have.status(200);
-    expect(res.body.payload).to.have.property('token');
+    try {
+      const res = await chai.request(app)
+        .post(loginUrl)
+        .send(user);
+      userToken = res.body.payload.token;
+      expect(res).to.have.status(200);
+      expect(res.body.payload).to.have.property('token');
+    }
+    catch (error) {
+      console.log(error)
+    }
   });
   describe('Unauthenticated user can not comment on other colleagues article post.', () => {
     it('should respond with unauthenticated error', (done) => {

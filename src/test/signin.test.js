@@ -13,8 +13,8 @@ describe('user(s) signin test', () => {
       chai.request(app)
         .post(signinUrl)
         .send({
-          email: 'admin2@teamwork.com',
-          password: '123456',
+          email: 'admin@teamwork.com',
+          password: 'aremu',
         })
         .end((error, res) => {
           expect(res).to.have.status(200);
@@ -24,22 +24,6 @@ describe('user(s) signin test', () => {
           done();
         });
     }).timeout(200000);
-    it('should not signin a user with invalid email', (done) => {
-      chai.request(app)
-        .post(signinUrl)
-        .send({
-          email: 'haffslafgmail.com',
-          password: '123456',
-        })
-        .end((error, res) => {
-          expect(res).to.have.status(500);
-          expect(res.body).to.have.property('success');
-          expect(res.body).to.have.property('message');
-          expect(res.body.success).to.equal(false);
-          expect(res.body.message).to.equal('Incorrect email or password');
-          done();
-        });
-    });
     it('should not signin a user with empty email and password', (done) => {
       chai.request(app)
         .post(signinUrl)
@@ -84,7 +68,7 @@ describe('user(s) signin test', () => {
           expect(res.body).to.have.property('message');
           expect(res.body).to.have.property('payload');
           expect(res.body.success).to.equal(false);
-          expect(res.body.message).to.equal('Incorrect email or password');
+          expect(res.body.message).to.equal('Fail to login');
           done();
         });
     });

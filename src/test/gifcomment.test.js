@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
 
-const gifCommentPost = '/api/v1/gifs/11/comment';
+const gifCommentPost = '/api/v1/gifs/10/comment';
 const loginUrl = '/api/v1/auth/signin';
 
 const { expect } = chai;
@@ -11,12 +11,12 @@ chai.use(chaiHttp);
 let userToken;
 
 const user = {
-  email: 'john@teamwork.com',
-  password: '123456',
+  email: 'aremu@teamwork.com',
+  password: 'aremu',
 };
 
 const comment = {
-  userId: 32,
+  userId: 6,
   comment: 'beautiful to be home boy !!!!!!!!!!!',
 };
 
@@ -25,7 +25,9 @@ describe('Gifs comment posts test', () => {
     const res = await chai.request(app)
       .post(loginUrl)
       .send(user);
+    console.log(res.body.payload.token)
     userToken = res.body.payload.token;
+    console.log(userToken)
     expect(res).to.have.status(200);
     expect(res.body.payload).to.have.property('token');
   });

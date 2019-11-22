@@ -13,8 +13,8 @@ const gifsPostUrl = '/api/v1/gifs';
 let userToken;
 
 const user = {
-  email: 'john@teamwork.com',
-  password: '123456',
+  email: 'aremu@teamwork.com',
+  password: 'aremu',
 };
 
 
@@ -35,7 +35,7 @@ describe('Gifs post tests', () => {
       chai.request(app)
         .post(gifsPostUrl)
         .set('Content-Type', 'application/x-www-form-urlencoded')
-        .field('userId', 32)
+        .field('userId', 6)
         .field('title', 'Beautiful')
         .attach('image', fs.readFileSync(path.join(__dirname, '/mockData/gif.jpg')), 'gif.jpg')
         .set('Authorization', userToken)
@@ -48,6 +48,6 @@ describe('Gifs post tests', () => {
           expect(res.body.payload).to.have.property('imageUrl');
           done();
         })
-    }).timeout(20000);
+    }).timeout(20000000);
   });
 });
