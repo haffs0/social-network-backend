@@ -7,7 +7,7 @@ const pool = require('./connect');
   Init Data
 */
 const insertInitData = () => {
-    const queryText = `INSERT INTO user (first_name, last_name, email, password, gender, job_role, department, address, phone_number, role, user_access) VALUES  ('Rowling', 'Potter', 'john@teamwork.com', '123456', 'male', 'developer', 'IT', 'ipaja', '090873654375', 'User', 'Yes')`
+    const queryText = `INSERT INTO public.user (first_name, last_name, email, password, gender, job_role, department, address, phone_number, role, user_access) VALUES  ('Rowling', 'Potter', 'john@teamwork.com', '123456', 'male', 'developer', 'IT', 'ipaja', '090873654375', 'User', 'Yes')`
   
   pool.query(queryText)
     .then((res) => {

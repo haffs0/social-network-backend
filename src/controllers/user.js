@@ -39,6 +39,7 @@ exports.signIn = async (request, response) => {
     const token = await generateToken(payload);
     const values = {
       userId: data.user_id,
+      role: data.role,
       token,
     };
     return respondWithSuccess(response, statusCode.success, responseMessage.successfulLogin, values);
