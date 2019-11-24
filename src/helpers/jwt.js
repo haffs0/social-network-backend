@@ -2,7 +2,9 @@ const jwt = require('jsonwebtoken');
 const { SECRET_KEY, EXPIRATION_DURATION } = require('./env-config');
 
 exports.generateToken = async (data, options = { expiresIn: EXPIRATION_DURATION }) => {
+  console.log(data, options)
   const token = await jwt.sign({ key: data }, SECRET_KEY, options);
+  console.log(token)
   return token;
 };
 
