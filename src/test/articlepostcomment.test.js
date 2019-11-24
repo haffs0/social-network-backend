@@ -22,17 +22,12 @@ const comment = {
 
 describe('Article comment posts test', () => {
   before(async () => {
-    try {
-      const res = await chai.request(app)
+    const res = await chai.request(app)
         .post(loginUrl)
         .send(user);
-      userToken = res.body.payload.token;
-      expect(res).to.have.status(200);
-      expect(res.body.payload).to.have.property('token');
-    }
-    catch (error) {
-      console.log(error)
-    }
+    userToken = res.body.payload.token;
+    expect(res).to.have.status(200);
+    expect(res.body.payload).to.have.property('token');
   });
   describe('Unauthenticated user can not comment on other colleagues article post.', () => {
     it('should respond with unauthenticated error', (done) => {

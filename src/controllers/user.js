@@ -39,13 +39,15 @@ exports.signIn = async (request, response) => {
     console.log(checkPassword)
     if (!checkPassword) return respondWithWarning(response, statusCode.unauthorizedAccess, 'Incorrect email or password');
     const payload = { userId: data.user_id, role: data.role };
+    console.log(payload)
     const token = await generateToken(payload);
+    console.log(token)
     const values = {
       userId: data.user_id,
       role: data.role,
       token,
     };
-
+    console.log(values)
     return respondWithSuccess(response, statusCode.success, responseMessage.successfulLogin, values);
   }
   catch (error) {
