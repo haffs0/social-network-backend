@@ -13,23 +13,23 @@ let adminToken;
 let userToken;
 
 const admin = {
-  email: 'admin2@teamwork.com',
-  password: '123456',
+  email: 'admin@teamwork.com',
+  password: 'aremu',
 };
 
 const user = {
-  email: 'john@teamwork.com',
-  password: '123456',
+  email: 'aremu@teamwork.com',
+  password: 'aremu',
 };
 
 const post = {
-  userId: 32,
+  userId: 5,
   title: 'the rain season is a beautiful thing to talk',
   article: 'when is about to rain the sky becomes blue and everything. Things about rain are beautiful.',
 };
 
 const post1 = {
-  userId: 33,
+  userId: 6,
   title: 'she is beautiful',
   article: 'My first love',
 };
@@ -37,11 +37,10 @@ const post1 = {
 describe('Article posts test', () => {
   before(async () => {
     const res = await chai.request(app)
-      .post(loginUrl)
-      .send(user);
+        .post(loginUrl)
+        .send(user);
     userToken = res.body.payload.token;
     expect(res).to.have.status(200);
-
     const response = await chai.request(app)
       .post(loginUrl)
       .send(admin);
@@ -70,7 +69,7 @@ describe('Article posts test', () => {
         .end((err, res) => {
           expect(res.status).to.equal(201);
           expect(res.body).to.have.property('success', true);
-          expect(res.body.payload).to.have.property('articleId');
+          expect(res.body.payload).to.have.property('id');
           expect(res.body.payload).to.have.property('createdOn');
           expect(res.body.payload).to.have.property('title');
           expect(res.body.payload).to.have.property('article');
@@ -87,7 +86,7 @@ describe('Article posts test', () => {
         .end((err, res) => {
           expect(res.status).to.equal(201);
           expect(res.body).to.have.property('success', true);
-          expect(res.body.payload).to.have.property('articleId');
+          expect(res.body.payload).to.have.property('id');
           expect(res.body.payload).to.have.property('createdOn');
           expect(res.body.payload).to.have.property('title');
           expect(res.body.payload).to.have.property('article');
@@ -101,7 +100,7 @@ describe('Article posts test', () => {
         .post(articlePost)
         .set('Authorization', adminToken)
         .send({
-          userId: 32,
+          userId: 5,
           title: '              ',
           article: 'when is about to rain the sky becomes blue and everything. Things about rain are beautiful.',
         })
@@ -116,7 +115,7 @@ describe('Article posts test', () => {
         .post(articlePost)
         .set('Authorization', adminToken)
         .send({
-          userId: 32,
+          userId: 5,
           title: '',
           article: 'when is about to rain the sky becomes blue and everything. Things about rain are beautiful.',
         })

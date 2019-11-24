@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
 
-const specficArticle = '/api/v1/articles/1';
+const specficArticle = '/api/v1/articles/10';
 const loginUrl = '/api/v1/auth/signin';
 
 const { expect } = chai;
@@ -11,8 +11,8 @@ chai.use(chaiHttp);
 let userToken;
 
 const user = {
-  email: 'john@teamwork.com',
-  password: '123456',
+  email: 'aremu@teamwork.com',
+  password: 'aremu',
 };
 
 describe('specfic article post test', () => {
@@ -46,7 +46,7 @@ describe('specfic article post test', () => {
           expect(res.body.payload).to.have.property('authorid');
           expect(res.body.payload).to.have.property('firstname');
           expect(res.body.payload).to.have.property('lastname');
-          expect(res.body.payload).to.have.property('articleid');
+          expect(res.body.payload).to.have.property('id');
           expect(res.body.payload).to.have.property('createdon');
           expect(res.body.payload).to.have.property('articletitle');
           expect(res.body.payload).to.have.property('article');

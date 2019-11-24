@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
 
-const specficGif = '/api/v1/gifs/11';
+const specficGif = '/api/v1/gifs/10';
 const loginUrl = '/api/v1/auth/signin';
 
 const { expect } = chai;
@@ -11,8 +11,8 @@ chai.use(chaiHttp);
 let userToken;
 
 const user = {
-  email: 'john@teamwork.com',
-  password: '123456',
+  email: 'aremu@teamwork.com',
+  password: 'aremu',
 };
 
 describe('specfic gif post test', () => {
@@ -46,13 +46,13 @@ describe('specfic gif post test', () => {
           expect(res.body.payload).to.have.property('authorid');
           expect(res.body.payload).to.have.property('firstname');
           expect(res.body.payload).to.have.property('lastname');
-          expect(res.body.payload).to.have.property('gifid');
+          expect(res.body.payload).to.have.property('id');
           expect(res.body.payload).to.have.property('gifdate');
           expect(res.body.payload).to.have.property('giftitle');
           expect(res.body.payload).to.have.property('image_url');
           expect(res.body.payload).to.have.property('comments');
           done();
         });
-    });
+    }).timeout(20000000);
   });
 });

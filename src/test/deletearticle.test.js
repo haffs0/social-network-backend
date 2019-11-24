@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
 
-const deleteArticlePost = '/api/v1/articles/6';
+const deleteArticlePost = '/api/v1/articles/2';
 const loginUrl = '/api/v1/auth/signin';
 
 const { expect } = chai;
@@ -13,8 +13,8 @@ let userToken;
 
 
 const user = {
-  email: 'john@teamwork.com',
-  password: '123456',
+  email: 'aremu@teamwork.com',
+  password: 'aremu',
 };
 
 

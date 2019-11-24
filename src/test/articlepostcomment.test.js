@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
 
-const articleCommentPost = '/api/v1/articles/1/comment';
+const articleCommentPost = '/api/v1/articles/10/comment';
 const loginUrl = '/api/v1/auth/signin';
 
 const { expect } = chai;
@@ -11,20 +11,20 @@ chai.use(chaiHttp);
 let userToken;
 
 const user = {
-  email: 'john@teamwork.com',
-  password: '123456',
+  email: 'aremu@teamwork.com',
+  password: 'aremu',
 };
 
 const comment = {
-  userId: 32,
+  userId: 6,
   comment: 'beautiful to be home boy !!!!!!!!!!!'
 };
 
 describe('Article comment posts test', () => {
   before(async () => {
     const res = await chai.request(app)
-      .post(loginUrl)
-      .send(user);
+        .post(loginUrl)
+        .send(user);
     userToken = res.body.payload.token;
     expect(res).to.have.status(200);
     expect(res.body.payload).to.have.property('token');
@@ -53,7 +53,6 @@ describe('Article comment posts test', () => {
           expect(res.body.payload).to.have.property('commentId');
           expect(res.body.payload).to.have.property('createdOn');
           expect(res.body.payload).to.have.property('articleTitle');
-          expect(res.body.payload).to.have.property('article');
           expect(res.body.payload).to.have.property('comment');
           done();
         });

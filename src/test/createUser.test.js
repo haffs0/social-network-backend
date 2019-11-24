@@ -13,19 +13,19 @@ let adminToken;
 let userToken;
 
 const admin = {
-  email: 'admin2@teamwork.com',
-  password: '123456',
+  email: 'admin@teamwork.com',
+  password: 'aremu',
 };
 
 const user = {
-  email: 'john@teamwork.com',
-  password: '123456',
+  email: 'aremu@teamwork.com',
+  password: 'aremu',
 };
 
 const newUser = {
   firstName: 'Oyinda',
   lastName: 'Aremu',
-  email: 'tryj@gmail.com',
+  email: 'try6@gmail.com',
   password: 'aremu',
   gender: 'Female',
   jobRole: 'Lead developer',
@@ -33,7 +33,7 @@ const newUser = {
   address: 'Yaba Lagos',
   phoneNumber: '08092341243',
   role: 'user',
-  userAccess: 'yes',
+  userAccess: 'yes'
 };
 
 
@@ -41,7 +41,7 @@ describe('Create users test', () => {
   before(async () => {
     const res = await chai.request(app)
       .post(loginUrl)
-      .send(user);
+      .send(user).timeout(20000);
     userToken = res.body.payload.token;
     expect(res).to.have.status(200);
 

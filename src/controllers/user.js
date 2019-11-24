@@ -21,6 +21,7 @@ exports.createUser = async (request, response) => {
       userId: data.user_id,
       token,
     };
+    console.log(values)
     return respondWithSuccess(response, statusCode.created, responseMessage.userCreated, values);
   }
   catch (error) {
@@ -33,12 +34,14 @@ exports.signIn = async (request, response) => {
   try {
     const user = await pool.query('SELECT * FROM public.user WHERE email = $1', [email]);
     const [data] = user.rows;
+    if (!data.email) return respondWithWarning(response, statusCode.unauthorizedAccess, 'Incorrect email or password');
     const checkPassword = await bcrypt.compare(password, data.password);
-    if (!checkPassword || data.email !== email) return respondWithWarning(response, statusCode.unauthorizedAccess, 'Incorrect email or password');
+    if (!checkPassword) return respondWithWarning(response, statusCode.unauthorizedAccess, 'Incorrect email or password');
     const payload = { userId: data.user_id, role: data.role };
     const token = await generateToken(payload);
     const values = {
       userId: data.user_id,
+      role: data.role,
       token,
     };
     return respondWithSuccess(response, statusCode.success, responseMessage.successfulLogin, values);

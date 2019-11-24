@@ -25,7 +25,7 @@ exports.createGif = async (request, response) => {
     }
     await pool.query('INSERT INTO public.gifs (user_id, title, image_url, date) VALUES($1, $2, $3, $4)', [userId, title, imageUrl, new Date()]);
     const data = {
-      gifId: id,
+      id,
       createdOn: new Date(),
       title,
       imageUrl,
@@ -52,7 +52,7 @@ exports.createArticles = async (request, response) => {
     }
     await pool.query('INSERT INTO public.article (user_id, title, article, date) VALUES($1, $2, $3, $4)', [userId, title, article, new Date()]);
     const data = {
-      articleId: id,
+      id,
       createdOn: new Date(),
       title,
       article,
@@ -70,7 +70,7 @@ exports.updateArticles = async (request, response) => {
   try {
     await pool.query('UPDATE public.article SET title = $1, article = $2, date = $3 WHERE article_id = $4', [title, article, new Date(), articleId]);
     const data = {
-      articleId,
+      id: articleId,
       updatedOn: new Date(),
       title,
       article,
@@ -121,12 +121,12 @@ exports.createCommentOfArticle = async (request, response) => {
       id = maxValue + 1;
     }
     await pool.query('INSERT INTO public.article_comment (article_id, user_id, comment, date) VALUES($1, $2, $3, $4)', [articleId, userId, comment, new Date()]);
-    const value = await pool.query('SELECT title, article FROM public.article');
+    const value = await pool.query('SELECT title, article, article_id FROM public.article WHERE article_id = $1', [articleId]);
     const data = {
       commentId: id,
       createdOn: new Date(),
       articleTitle: value.rows[0].title,
-      article: value.rows[0].article,
+      id: value.rows[0].article_id,
       comment,
     };
     return respondWithSuccess(response, statusCode.created, 'Comment successfully created', data);
@@ -151,11 +151,12 @@ exports.createCommentOfGif = async (request, response) => {
       id = maxValue + 1;
     }
     await pool.query('INSERT INTO public.gifs_comment (gif_id, user_id, gif_comment, date) VALUES($1, $2, $3, $4)', [gifId, userId, comment, new Date()]);
-    const value = await pool.query('SELECT title FROM public.gifs');
+    const value = await pool.query('SELECT gif_id, title FROM public.gifs WHERE gif_id = $1', [gifId]);
     const data = {
       commentId: id,
       createdOn: new Date(),
       gifTitle: value.rows[0].title,
+      id: value.rows[0].gif_id,
       comment,
     };
     return respondWithSuccess(response, statusCode.created, 'Comment successfully created', data);
@@ -167,22 +168,22 @@ exports.createCommentOfGif = async (request, response) => {
 
 exports.getAll = async (request, response) => {
   try {
-    const result = await pool.query('select u.user_id, gif_id, first_name, last_name, g.title gifTitle, g.date gifDate, image_url from public.user u LEFT JOIN public.gifs g ON u.user_id = g.user_id ORDER BY g.date DESC');
+    const result = await pool.query('select u.user_id, gif_id id, first_name, last_name, g.title gifTitle, g.date gifDate, image_url from public.user u LEFT JOIN public.gifs g ON u.user_id = g.user_id ORDER BY g.date DESC');
     // console.log(result.rows);
-    const article = await pool.query('select u.user_id, article_id, first_name, last_name, a.date articleDate, a.title articleTitle, article from public.user u LEFT JOIN public.article a ON u.user_id = a.user_id ORDER BY a.date DESC');
+    const article = await pool.query('select u.user_id, article_id id, first_name, last_name, a.date articleDate, a.title articleTitle, article from public.user u LEFT JOIN public.article a ON u.user_id = a.user_id ORDER BY a.date DESC');
     const articleData =article.rows;
     const data = result.rows;
-    const articlesPost = articleData.map((ele) => ({name: `${ele.first_name} ${ele.last_name}`, articleId: ele.article_id, createdOn: ele.articledate, title: ele.articletitle, article: ele.article, authorId: ele.user_id }));
-    const gifsPost = data.map((ele) => ({name: `${ele.first_name} ${ele.last_name}`, gifId: ele.gif_id, createdOn: ele.gifdate, title: ele.giftitle, url: ele.image_url, authorId: ele.user_id }));
+    const articlesPost = articleData.map((ele) => ({name: `${ele.first_name} ${ele.last_name}`, id: ele.id, createdOn: ele.articledate, title: ele.articletitle, article: ele.article, authorId: ele.user_id }));
+    const gifsPost = data.map((ele) => ({name: `${ele.first_name} ${ele.last_name}`, id: ele.id, createdOn: ele.gifdate, title: ele.giftitle, url: ele.image_url, authorId: ele.user_id }));
     const filterArticles = articlesPost.filter((ele) => ele.article !== null);
     const filterGifs = gifsPost.filter((ele) => ele.url !== null);
-    const articleComment = await pool.query('select a.user_id authorId, a.article_id articleId, article_comment_id commentId, c.date createdOn, c.comment articleComment from public.article a LEFT JOIN public.article_comment c ON a.article_id = c.article_id ORDER BY c.date DESC');
+    const articleComment = await pool.query('select a.user_id authorId, a.article_id id, article_comment_id commentId, c.date createdOn, c.comment articleComment from public.article a LEFT JOIN public.article_comment c ON a.article_id = c.article_id ORDER BY c.date DESC');
     const commentValue = articleComment.rows;
-    const gifComment = await pool.query('select g.user_id authorId, g.gif_id gifId, gifs_comment_id commentId, c.date createdOn, c.gif_comment gifComment from public.gifs g LEFT JOIN public.gifs_comment c ON g.gif_id = c.gif_id ORDER BY c.date DESC');
+    const gifComment = await pool.query('select g.user_id authorId, g.gif_id id, gifs_comment_id commentId, c.date createdOn, c.gif_comment gifComment from public.gifs g LEFT JOIN public.gifs_comment c ON g.gif_id = c.gif_id ORDER BY c.date DESC');
     const gifsCommentValue = gifComment.rows;
     for (let i = 0; i < filterArticles.length; i++) {
       commentValue.forEach((ele) => {
-        if (filterArticles[i].articleId === ele.articleid) {
+        if (filterArticles[i].id === ele.id) {
           if (ele.articlecomment !== null) {
             if (typeof filterArticles[i].comments === 'undefined') {
               filterArticles[i].comments = [];
@@ -197,7 +198,7 @@ exports.getAll = async (request, response) => {
     }
     for (let i = 0; i < filterGifs.length; i++) {
       gifsCommentValue.forEach((ele) => {
-        if (filterGifs[i].gifId === ele.gifid) {
+        if (filterGifs[i].id === ele.id) {
           if (ele.gifcomment !== null) {
             if (typeof filterGifs[i].comments === 'undefined') {
               filterGifs[i].comments = [];
@@ -221,7 +222,7 @@ exports.getAll = async (request, response) => {
 exports.viewSpecficArticle = async (request, response) => {
   const articleId = parseInt(request.params.articleId, 10);
   try {
-    const article = await pool.query('select u.user_id authorID, article_id articleId, first_name firstName, last_name lastName, a.date createdOn, a.title articleTitle, article from public.user u LEFT JOIN public.article a ON u.user_id = a.user_id where article_id =$1', [articleId]);
+    const article = await pool.query('select u.user_id authorID, article_id id, first_name firstName, last_name lastName, a.date createdOn, a.title articleTitle, article from public.user u LEFT JOIN public.article a ON u.user_id = a.user_id where article_id =$1', [articleId]);
     const articleComment = await pool.query('select a.user_id authorId, a.article_id articleId, article_comment_id commentId, c.date createdOn, c.comment articleComment from public.article a LEFT JOIN public.article_comment c ON a.article_id = c.article_id where a.article_id = $1', [articleId]);
     const articleValue = article.rows[0];
     const commentValue = articleComment.rows;
@@ -236,7 +237,7 @@ exports.viewSpecficArticle = async (request, response) => {
 exports.viewSpecficGif = async (request, response) => {
   const gifId = parseInt(request.params.gifId, 10);
   try {
-    const gif = await pool.query('select u.user_id authorId, gif_id gifId, first_name firstName, last_name lastName, g.title gifTitle, g.date gifDate, image_url from public.user u LEFT JOIN public.gifs g ON u.user_id = g.user_id where gif_id =$1', [gifId]);
+    const gif = await pool.query('select u.user_id authorId, gif_id id, first_name firstName, last_name lastName, g.title gifTitle, g.date gifDate, image_url from public.user u LEFT JOIN public.gifs g ON u.user_id = g.user_id where gif_id =$1', [gifId]);
     const gifComment = await pool.query('select g.user_id authorId, g.gif_id gifId, gifs_comment_id commentId, c.date createdOn, c.gif_comment gifComment from public.gifs g LEFT JOIN public.gifs_comment c ON g.gif_id = c.gif_id where g.gif_id = $1', [gifId]);
     const gifValue = gif.rows[0];
     const commentValue = gifComment.rows;
@@ -253,7 +254,7 @@ exports.category = async (request, response) => {
   try {
     const article = await pool.query('select u.user_id, article_id, first_name, last_name, a.date articleDate, a.title articleTitle, article from public.user u LEFT JOIN public.article a ON u.user_id = a.user_id where article like  $1', [`%${category}%`]);
     const articleData = article.rows;
-    const articlesPost = articleData.map((ele) => ({name: `${ele.first_name} ${ele.last_name}`, articleId: ele.article_id, createdOn: ele.articledate, title: ele.articletitle, article: ele.article, authorId: ele.user_id }))
+    const articlesPost = articleData.map((ele) => ({name: `${ele.first_name} ${ele.last_name}`, id: ele.article_id, createdOn: ele.articledate, title: ele.articletitle, article: ele.article, authorId: ele.user_id }))
     const filterArticles = articlesPost.filter((ele) => ele.article !== null);
     const articleComment = await pool.query('select a.user_id authorId, a.article_id articleId, article_comment_id commentId, c.date createdOn, c.comment articleComment from public.article a LEFT JOIN public.article_comment c ON a.article_id = c.article_id ORDER BY c.date DESC');
     const commentValue = articleComment.rows;
