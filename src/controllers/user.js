@@ -37,6 +37,7 @@ exports.signIn = async (request, response) => {
     if (!data.email) return respondWithWarning(response, statusCode.unauthorizedAccess, 'Incorrect email or password');
     const checkPassword = await bcrypt.compare(password, data.password);
     console.log(checkPassword)
+    console.log(password, data.password)
     if (!checkPassword) return respondWithWarning(response, statusCode.unauthorizedAccess, 'Incorrect email or password');
     const payload = { userId: data.user_id, role: data.role };
     console.log(payload)

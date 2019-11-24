@@ -47,7 +47,7 @@ describe('Article posts test', () => {
     adminToken = response.body.payload.token;
     expect(response).to.have.status(200);
     expect(response.body.payload).to.have.property('token');
-  }).timeout(200000000);
+  });
   describe('Unauthenticated user can not create article post.', () => {
     it('should respond with unauthenticated error', (done) => {
       chai.request(app)
