@@ -51,7 +51,6 @@ exports.createArticles = async (request, response) => {
       id = maxValue + 1;
     }
     await pool.query('INSERT INTO public.article (user_id, title, article, date) VALUES($1, $2, $3, $4)', [userId, title, article, new Date()]);
-    console.log('here3')
     const data = {
       id,
       createdOn: new Date(),
