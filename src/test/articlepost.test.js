@@ -36,22 +36,17 @@ const post1 = {
 
 describe('Article posts test', () => {
   before(async () => {
-    try {
-      const res = await chai.request(app)
+    const res = await chai.request(app)
         .post(loginUrl)
         .send(user);
-      userToken = res.body.payload.token;
-      expect(res).to.have.status(200);
-      const response = await chai.request(app)
-        .post(loginUrl)
-        .send(admin);
-      adminToken = response.body.payload.token;
-      expect(response).to.have.status(200);
-      expect(response.body.payload).to.have.property('token');
-    }
-    catch (error) {
-      console.log(error)
-    }
+    userToken = res.body.payload.token;
+    expect(res).to.have.status(200);
+    const response = await chai.request(app)
+      .post(loginUrl)
+      .send(admin);
+    adminToken = response.body.payload.token;
+    expect(response).to.have.status(200);
+    expect(response.body.payload).to.have.property('token');
   });
   describe('Unauthenticated user can not create article post.', () => {
     it('should respond with unauthenticated error', (done) => {
@@ -74,7 +69,7 @@ describe('Article posts test', () => {
         .end((err, res) => {
           expect(res.status).to.equal(201);
           expect(res.body).to.have.property('success', true);
-          expect(res.body.payload).to.have.property('articleId');
+          expect(res.body.payload).to.have.property('id');
           expect(res.body.payload).to.have.property('createdOn');
           expect(res.body.payload).to.have.property('title');
           expect(res.body.payload).to.have.property('article');
@@ -91,7 +86,7 @@ describe('Article posts test', () => {
         .end((err, res) => {
           expect(res.status).to.equal(201);
           expect(res.body).to.have.property('success', true);
-          expect(res.body.payload).to.have.property('articleId');
+          expect(res.body.payload).to.have.property('id');
           expect(res.body.payload).to.have.property('createdOn');
           expect(res.body.payload).to.have.property('title');
           expect(res.body.payload).to.have.property('article');

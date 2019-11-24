@@ -25,7 +25,7 @@ const user = {
 const newUser = {
   firstName: 'Oyinda',
   lastName: 'Aremu',
-  email: 'try4@gmail.com',
+  email: 'try6@gmail.com',
   password: 'aremu',
   gender: 'Female',
   jobRole: 'Lead developer',

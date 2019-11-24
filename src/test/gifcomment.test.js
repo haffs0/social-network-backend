@@ -25,9 +25,7 @@ describe('Gifs comment posts test', () => {
     const res = await chai.request(app)
       .post(loginUrl)
       .send(user);
-    console.log(res.body.payload.token)
     userToken = res.body.payload.token;
-    console.log(userToken)
     expect(res).to.have.status(200);
     expect(res.body.payload).to.have.property('token');
   });

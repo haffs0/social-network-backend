@@ -46,7 +46,7 @@ describe('view all articles that belong to a category test', () => {
           expect(res.body).to.have.property('success', true);
           expect(res.body.payload[0]).to.have.property('authorId');
           expect(res.body.payload[0]).to.have.property('name');
-          expect(res.body.payload[0]).to.have.property('articleId');
+          expect(res.body.payload[0]).to.have.property('id');
           expect(res.body.payload[0]).to.have.property('createdOn');
           expect(res.body.payload[0]).to.have.property('title');
           expect(res.body.payload[0]).to.have.property('article');

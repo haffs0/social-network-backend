@@ -46,7 +46,7 @@ describe('specfic gif post test', () => {
           expect(res.body.payload).to.have.property('authorid');
           expect(res.body.payload).to.have.property('firstname');
           expect(res.body.payload).to.have.property('lastname');
-          expect(res.body.payload).to.have.property('gifid');
+          expect(res.body.payload).to.have.property('id');
           expect(res.body.payload).to.have.property('gifdate');
           expect(res.body.payload).to.have.property('giftitle');
           expect(res.body.payload).to.have.property('image_url');

@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
 
-const articleUpdatedPost = '/api/v1/articles/2';
+const articleUpdatedPost = '/api/v1/articles/9';
 const loginUrl = '/api/v1/auth/signin';
 
 const { expect } = chai;
@@ -51,7 +51,7 @@ describe('Article update posts test', () => {
         .end((err, res) => {
           expect(res.status).to.equal(201);
           expect(res.body).to.have.property('success', true);
-          expect(res.body.payload).to.have.property('articleId');
+          expect(res.body.payload).to.have.property('id');
           expect(res.body.payload).to.have.property('updatedOn');
           expect(res.body.payload).to.have.property('title');
           expect(res.body.payload).to.have.property('article');

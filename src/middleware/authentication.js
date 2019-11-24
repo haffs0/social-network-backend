@@ -12,6 +12,7 @@ module.exports = async (req, res, next) => {
   try {
     const { key } = await verifyToken(token);
     req.auth = key;
+    console.log('here1')
     return next()
   } catch (error) {
     return respondWithWarning(res, 401, formatJWTErrorMessage(error.message));

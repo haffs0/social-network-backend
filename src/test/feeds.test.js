@@ -15,6 +15,11 @@ const user = {
   password: 'aremu',
 };
 
+// const user = {
+//   email: 'john@teamwork.com',
+//   password: '123456',
+// };
+
 describe('feed(all articles posts and gifs posts) test', () => {
   before(async () => {
     const res = await chai.request(app)
@@ -45,7 +50,7 @@ describe('feed(all articles posts and gifs posts) test', () => {
           expect(res.body).to.have.property('success', true);
           expect(res.body.payload[0]).to.have.property('authorId');
           expect(res.body.payload[0]).to.have.property('name');
-          expect(res.body.payload[0]).to.have.property('articleId');
+          expect(res.body.payload[0]).to.have.property('id');
           expect(res.body.payload[0]).to.have.property('createdOn');
           expect(res.body.payload[0]).to.have.property('title');
           expect(res.body.payload[0]).to.have.property('article');

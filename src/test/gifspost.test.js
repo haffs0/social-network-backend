@@ -42,7 +42,7 @@ describe('Gifs post tests', () => {
         .end((error, res) => {
           expect(res).to.have.status(201);
           expect(res.body.success).to.equal(true);
-          expect(res.body.payload).to.have.property('gifId');
+          expect(res.body.payload).to.have.property('id');
           expect(res.body.payload).to.have.property('createdOn');
           expect(res.body.payload).to.have.property('title');
           expect(res.body.payload).to.have.property('imageUrl');

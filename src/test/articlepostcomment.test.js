@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
 
-const articleCommentPost = '/api/v1/articles/1/comment';
+const articleCommentPost = '/api/v1/articles/10/comment';
 const loginUrl = '/api/v1/auth/signin';
 
 const { expect } = chai;
@@ -58,7 +58,6 @@ describe('Article comment posts test', () => {
           expect(res.body.payload).to.have.property('commentId');
           expect(res.body.payload).to.have.property('createdOn');
           expect(res.body.payload).to.have.property('articleTitle');
-          expect(res.body.payload).to.have.property('article');
           expect(res.body.payload).to.have.property('comment');
           done();
         });
