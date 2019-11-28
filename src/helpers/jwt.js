@@ -6,7 +6,7 @@ exports.generateToken = async (data, options = { expiresIn: EXPIRATION_DURATION 
   return token;
 };
 
-exports.verifyToken = (token) => jwt.verify(token, SECRET_KEY);
+exports.verifyToken = async (token) => await jwt.verify(token, SECRET_KEY);
 
 exports.formatJWTErrorMessage = (message) => {
   let formattedMessage;

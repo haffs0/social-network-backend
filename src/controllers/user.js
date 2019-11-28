@@ -8,11 +8,13 @@ const { generateToken } = require('../helpers/jwt');
 
 exports.createUser = async (request, response) => {
   const {
-    firstName, lastName, email, password, gender, jobRole, department, address, phoneNumber, role, userAccess,
+    firstName, lastName, email, password, gender, jobRole, department, address, phoneNumber, role,
   } = request.body;
+  let createUser;
+  role === 'Admin' || role === 'admin' ? createUser = 'yes' : '';
   try {
     const hash = await bcrypt.hash(password, 10);
-    const res = await pool.query('INSERT INTO public.user (first_name, last_name, email, password, gender, job_role, department, address, phone_number, role, user_access) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [firstName, lastName, email, hash, gender, jobRole, department, address, phoneNumber, role, userAccess]);
+    const res = await pool.query('INSERT INTO public.user (first_name, last_name, email, password, gender, job_role, department, address, phone_number, role, create_user, user_access) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)', [firstName, lastName, email, hash, gender, jobRole, department, address, phoneNumber, role, createUser, 'yes']);
     const user = await pool.query('SELECT * FROM public.user WHERE email = $1', [email]);
     const data = user.rows[0];
     const payload = { userId: data.user_id, role: data.role };
@@ -21,7 +23,6 @@ exports.createUser = async (request, response) => {
       userId: data.user_id,
       token,
     };
-    console.log(values)
     return respondWithSuccess(response, statusCode.created, responseMessage.userCreated, values);
   }
   catch (error) {

@@ -31,7 +31,6 @@ const validateCreateUserFormData = (req, res, next) => {
     jobRole: validator.jobRole,
     phoneNumber: validator.phoneNumber,
     address: validator.address,
-    userAccess: validator.userAccess,
   });
   const schema = data.constructor === Array ? Joi.array().items(createUserSchema) : createUserSchema;
   const { error } = schema.validate(data, {abortEarly: false });

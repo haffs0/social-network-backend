@@ -7,7 +7,7 @@ const responseMessage = require('../helpers/responseMessages');
 
 module.exports = async (req, res, next) => {
   let token = req.headers.authorization;
-  if (token && token.startsWith('Bearer')) token = token.slice(7, token.length);
+  if (token && token.startsWith('Bearer')) token = token.slice(6, token.length);
   if (!token) return respondWithWarning(res, statusCode.unauthorizedAccess, responseMessage.expiredSession);
   try {
     const { key } = await verifyToken(token);
